@@ -1,9 +1,10 @@
 <script>
 import defaultInput from "./components/UI/defaultInput.vue";
 import defaultButton from "./components/UI/defaultButton.vue";
+import taskComponent from "./components/taskComponent.vue";
 
 export default{
-  components: {defaultInput, defaultButton},
+  components: {defaultInput, defaultButton, taskComponent},
   data(){
     return {
       taskInput: '',
@@ -15,7 +16,7 @@ export default{
       this.$store.dispatch('searchtask', this.searchInput)
     },
     addTask(){
-      if(this.taskInput.length > 0){
+      if(this.taskInput.trim().length > 0){
         this.$store.dispatch('addtask', this.taskInput)
         this.taskInput = ''
       }
@@ -52,25 +53,11 @@ export default{
       <!-- Результаты поиска  -->
         <div v-if="searchResults && searchInput.length > 0 && tasks.length > 0" class="border-2 border-white/50 py-2 flex flex-col items-center gap-4 overflow-y-auto w-full h-full">
         <p v-if="searchResults.length > 0">Результаты поиска:</p>
-        <div v-for="task in searchResults" :key="task.id" class="flex flex-row items-center w-full justify-between px-4 py-2 border-2 border-white text-white" :class="task.isCompleted ? 'text-opacity-50 bg-white/5 border-opacity-25' : ''">
-          <p class="text-xl font-semibold">{{task.name}}</p>
-          <div class="flex flex-row items-center gap-4">
-            <input :checked="task.isCompleted" type="checkbox" class="w-8 h-8" @change="updateTask(task.id)" />
-            <button @click="deleteTask(task.id)">Delete</button>
-          </div>
-        </div>
+        <taskComponent v-for="task in searchResults" :key="task.id" :task="task" @update="updateTask" @delete="deleteTask" />
         <p v-if="searchResults.length < 1">Нет результатов</p>
       </div>
       <!-- Все таски -->
-      <div v-if="tasks" class="flex flex-col items-center gap-4 overflow-y-auto w-full h-full">
-        <div v-for="task in tasks" :key="task.id" class="flex flex-row items-center w-full justify-between px-4 py-2 border-2 border-white text-white" :class="task.isCompleted ? 'text-opacity-50 bg-white/5 border-opacity-25' : ''">
-          <p class="text-xl font-semibold">{{task.name}}</p>
-          <div class="flex flex-row items-center gap-4">
-            <input :checked="task.isCompleted" type="checkbox" class="w-8 h-8" @change="updateTask(task.id)" />
-            <button @click="deleteTask(task.id)">Delete</button>
-          </div>
-        </div>
-      </div>
+      <taskComponent v-for="task in tasks" :key="task.id" :task="task" @update="updateTask" @delete="deleteTask" />
       <!-- Добавление задачи -->
       <div class="flex flex-row items-center w-full">
         <defaultInput @keydown-enter="addTask" v-model="taskInput" :placeholder="'Введите задание:'" />
