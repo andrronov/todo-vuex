@@ -21,8 +21,8 @@ export default{
       }
     },
     deleteTask(idx){
-      console.log(idx);
       this.$store.dispatch('deletetask', idx)
+      this.searchInput = ''
     },
     updateTask(idx){
       this.$store.dispatch('updatetask', idx)
@@ -49,7 +49,7 @@ export default{
     <!-- Контент -->
     <div class="max-w-7xl w-full max-h-4/5 p-4 mx-2 rounded-xl backdrop-blur-xl border-2 border-white/50 bg-white/15 flex flex-col items-center justify-center gap-8">
       <defaultInput v-model="searchInput" @input="searchTask" v-if="tasks.length > 0" type="text" :placeholder="'Поиск'" />
-      <!-- Результаты поиска (уже не стал переиспользовать компонент) -->
+      <!-- Результаты поиска  -->
         <div v-if="searchResults && searchInput.length > 0 && tasks.length > 0" class="border-2 border-white/50 py-2 flex flex-col items-center gap-4 overflow-y-auto w-full h-full">
         <p v-if="searchResults.length > 0">Результаты поиска:</p>
         <div v-for="task in searchResults" :key="task.id" class="flex flex-row items-center w-full justify-between px-4 py-2 border-2 border-white text-white" :class="task.isCompleted ? 'text-opacity-50 bg-white/5 border-opacity-25' : ''">
