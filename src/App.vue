@@ -47,7 +47,7 @@ export default{
     <div class="w-44 h-44 top-5 left-5 bg-red-700/90 blur-sm rounded-full absolute" id="ball_2"></div>
     
     <!-- Контент -->
-    <div class="max-w-7xl relative w-full max-h-[80vh] p-4 mx-2 rounded-xl backdrop-blur-xl border-2 border-white/50 bg-white/15 flex flex-col items-center justify-center gap-8">
+    <div class="max-w-7xl relative w-full max-h-[80vh] p-4 mx-2 rounded-xl backdrop-blur-xl border-2 border-white/50 bg-white/15 flex flex-col items-center justify-center" :class="tasks.length > 0 ? 'gap-8' : 'gap-0'">
       <defaultInput v-model="searchInput" @input="searchTask" v-if="tasks.length > 0" type="text" :placeholder="'Поиск'" />
 
       <!-- Результаты поиска -->
